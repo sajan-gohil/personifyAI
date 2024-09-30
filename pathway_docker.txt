@@ -1,0 +1,40 @@
+Pull the Container Image:
+Ensure you have pulled the container image from Amazon ECR using the provided container image details:
+docker pull <AWS MP Container image URL>
+
+Launch the Docker Container:
+Run the following command to launch the Docker container:
+docker run -ti <AWS MP Container image URL>
+
+Use the Docker Image in a Dockerfile
+
+You can also use this Docker image in a Dockerfile to build a custom script.
+Here is an example Dockerfile:
+
+FROM <AWS MP Container image URL>
+
+COPY your_script.py /app/your_script.py
+
+CMD ["python", "/app/your_script.py"]
+
+Build your custom Docker image with the following command:
+docker build -t my-custom-image
+
+Then, run your custom Docker image:
+docker run -ti my-custom-image
+
+If you are a Pathway Scale or Pathway Enterprise user, you can provide the license key in one of the following ways:
+
+Set the PATHWAY_LICENSE_KEY environment variable inside the container.
+Specify the key directly as the license_key parameter in the pw.run method.
+
+The license key can be obtained at https://pathway.com/features/
+
+aws ecr get-login-password \
+    --region us-east-1 | docker login \
+    --username AWS \
+    --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
+    
+CONTAINER_IMAGES="709825985650.dkr.ecr.us-east-1.amazonaws.com/pathway/pathway-containers:0.14.3"    
+
+for i in $(echo $CONTAINER_IMAGES | sed "s/,/ /g"); do docker pull $i; done
